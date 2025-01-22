@@ -1,0 +1,48 @@
+@media (min-width: 700px) {
+  .container-1 {
+    display: flex;
+    align-items:center;
+  }
+}
+
+.container-1 div {
+  border: 1px #000000 solid;
+}
+
+.grids{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    flex: 1.5;
+}
+
+.actions {
+  flex: 0.4;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shoot{
+    height: 2rem;
+    margin: 10px 5px;
+    background-color: red;
+    border: none;
+    color: white;
+    border-radius: 35px;
+    width: 5rem;
+}
+
+.battleship-grid{
+    margin: 6vmin;
+    display: grid;
+    background-color: hsl(200, 100%, 50%);
+    grid-template-rows: repeat(10, 6.6vmin);
+    grid-template-columns: repeat(10, 6.6vmin);
+}
+
+.battleship-grid div{
+    border: 1px solid hsla(0, 0%, 100%, .2);
+}
