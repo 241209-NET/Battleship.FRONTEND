@@ -198,56 +198,58 @@ const Game = () => {
 
   return (
     <>
-      <div className="container-1">
-        <div className="grids">
-          <div
-            className="battleship-grid player-grid"
-            ref={playerGridRef}
-          ></div>
-          <div
-            className="battleship-grid shooting-grid"
-            ref={shootingGridRef}
-          ></div>
+      <div className="Game-Container">
+        <div className="container-1">
+          <div className="grids">
+            <div
+              className="battleship-grid player-grid"
+              ref={playerGridRef}
+            ></div>
+            <div
+              className="battleship-grid shooting-grid"
+              ref={shootingGridRef}
+            ></div>
+          </div>
+          <div className="actions">
+            <button className="shoot">Shoot</button>
+          </div>
         </div>
-        <div className="actions">
-          <button className="shoot">Shoot</button>
-        </div>
-      </div>
-      <div className="Guide-1">
-        {message ? (
-          <>
-            <p>{message}</p>
+        <div className="Guide-1">
+          {message ? (
+            <>
+              <p>{message}</p>
+              <button
+                className="set-boat"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSet();
+                }}
+              >
+                Set
+              </button>
+              <button
+                className="set-boat"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRotate();
+                }}
+              >
+                Change Direction
+              </button>
+              <div className={boatState.style} ref={boatRef} id="move"></div>
+            </>
+          ) : (
             <button
-              className="set-boat"
+              className="start-button"
               onClick={(e) => {
-                e.preventDefault();
-                handleSet();
+                e.preventDefault;
+                handleStart();
               }}
             >
-              Set
+              Start
             </button>
-            <button
-              className="set-boat"
-              onClick={(e) => {
-                e.preventDefault();
-                handleRotate();
-              }}
-            >
-              Change Direction
-            </button>
-            <div className={boatState.style} ref={boatRef} id="move"></div>
-          </>
-        ) : (
-          <button
-            className="start-button"
-            onClick={(e) => {
-              e.preventDefault;
-              handleStart();
-            }}
-          >
-            Start
-          </button>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

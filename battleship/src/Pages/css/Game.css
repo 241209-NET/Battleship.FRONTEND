@@ -5,6 +5,21 @@
   }
 }
 
+.container-1 {
+margin-top: 3.8rem;
+}
+
+.Game-Container{
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+#root{
+  width: 100%;
+  height: 100%;
+}
+
 .grids {
   display: flex;
   justify-content: center;
@@ -17,7 +32,7 @@
   flex: 0.5;
   height: 10rem;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
@@ -36,7 +51,7 @@
 }
 
 .battleship-grid {
-  margin: 6vmin;
+  margin: 4vmin;
   display: grid;
   background-color: hsl(200, 100%, 50%);
   grid-template-rows: repeat(10, 5.6vmin);

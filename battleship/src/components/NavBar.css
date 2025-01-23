@@ -1,17 +1,21 @@
 .navBar {
-    top: 5%; /* Aligns it to the top of the screen */
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    width: 100%; /* Covers the full width of the screen */
-    height: 5%; /* Adjust as needed for navbar height */
-    font-size: 27px;
-    /*background-color: darkblue;*/
-    z-index: 1000; /* Ensures it stays above other content */
+  top: 5%; /* Aligns it to the top of the screen */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%; /* Covers the full width of the screen */
+  height: 5%; /* Adjust as needed for navbar height */
+  font-size: 27px;
+  /*background-color: darkblue;*/
+  z-index: 1000; /* Ensures it stays above other content */
 }
 
-.Nav  {
-    display: flex;
-    justify-content: space-evenly;
+.Nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.navBar div {
+  width: 100%;
 }
