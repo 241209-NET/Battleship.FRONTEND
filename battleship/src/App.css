@@ -1,5 +1,32 @@
 #root {
-  text-align: center;
+
+}
+.body  {
+  display: flex;
+  /*position: absolute;*/
+  top: 10%;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  justify-content: center; /* Centers horizontally */
+}
+h2 {
+  text-align: center;
+}
+.title {
+  width: 100%;
+}
+.background {
+  position: fixed; /* Ensure the background stays fixed behind content */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1; /* Push the background behind other elements */
+}
+div {
+  width: 100%;
 }
