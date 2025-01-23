@@ -1,0 +1,145 @@
+@media (min-width: 700px) {
+  .container-1 {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.grids {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  flex: 2;
+}
+
+.actions {
+  flex: 0.5;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shoot {
+  height: 2rem;
+  margin: 10px 5px;
+  background-color: rgb(241, 58, 58);
+  border: none;
+  color: white;
+  border-radius: 35px;
+  width: 5rem;
+}
+
+.shoot:hover {
+  background-color: rgb(209, 14, 14);
+}
+
+.battleship-grid {
+  margin: 6vmin;
+  display: grid;
+  background-color: hsl(200, 100%, 50%);
+  grid-template-rows: repeat(10, 5.6vmin);
+  grid-template-columns: repeat(10, 5.6vmin);
+}
+
+.battleship-grid div {
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
+}
+
+.start-button {
+  height: 2rem;
+  margin: 10px 5px;
+  border: none;
+  color: white;
+  border-radius: 35px;
+  width: 20rem;
+  background-color: rgb(149, 247, 2);
+}
+
+.start-button:hover{
+  background-color: rgb(141, 216, 20);
+}
+
+.set-boat{
+  height: 2rem;
+  margin: 10px 5px;
+  border: none;
+  color: white;
+  border-radius: 35px;
+  width: 20rem;
+  background-color: rgb(99, 99, 99);
+}
+
+.set-boat:hover{
+  background-color: rgb(83, 79, 79);
+}
+
+.ship > div {
+  width: 5.6vmin;
+  height: 5.6vmin;
+}
+
+.ship {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1vmin;
+  width: calc(5.6vmin * var(--width, 1));
+  height: calc(5.6vmin * var(--height, 1));
+  border-radius: 2.3vmin;
+}
+
+.destroyer-container {
+  --width: 2;
+}
+
+.destroyer-container-vertical {
+  --height: 2;
+  --width: 1;
+}
+
+.submarine-container,
+.cruiser-container {
+  --width: 3;
+}
+
+.submarine-container-vertical,
+.cruiser-container-vertical {
+  --height: 3;
+  --width: 1;
+}
+
+.battleship-container {
+  --width: 4;
+}
+
+.battleship-container-vertical {
+  --height: 4;
+  --width: 1;
+}
+
+.carrier-container {
+  --width: 5;
+}
+
+.carrier-container-vertical {
+  --height: 5;
+  --width: 1;
+}
+
+.taken,
+.ship {
+  position: relative;
+  background-color: hsl(0, 0%, 80%);
+}
+
+.square:hover{
+  background-color: hsl(200, 92%, 60%);;
+}
+
+#move{
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  position: fixed;
+}
