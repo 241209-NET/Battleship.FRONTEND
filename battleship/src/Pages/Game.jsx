@@ -178,7 +178,9 @@ const Game = () => {
 
   // This will trigger the game to start
   const handleStart = () => {
-    setMessage("Set position of your Carrier on the left grid");
+    setMessage(
+      'Set position of your Carrier on the left grid, when Done click "Set"'
+    );
     dispatch({ type: BOAT_ACTIONS.CARRIER });
   };
 
@@ -221,16 +223,24 @@ const Game = () => {
   const handleSet = () => {
     isHorizontal = true;
     if (boatState.boat === "carrier") {
-      setMessage("Set position of your Battleship on the left grid");
+      setMessage(
+        'Set position of your Battleship on the left grid, when Done click "Set"'
+      );
       dispatch({ type: BOAT_ACTIONS.BATTLESHIP });
     } else if (boatState.boat === "battleship") {
-      setMessage("Set position of your Cruiser on the left grid");
+      setMessage(
+        'Set position of your Cruiser on the left grid, when Done click "Set"'
+      );
       dispatch({ type: BOAT_ACTIONS.CRUISER });
     } else if (boatState.boat === "cruiser") {
-      setMessage("Set position of your Submarine on the left grid");
+      setMessage(
+        'Set position of your Submarine on the left grid, when Done click "Set"'
+      );
       dispatch({ type: BOAT_ACTIONS.SUBMARINE });
     } else if (boatState.boat === "submarine") {
-      setMessage("Set position of your Destroyer on the left grid");
+      setMessage(
+        'Set position of your Destroyer on the left grid, when Done click "Set"'
+      );
       dispatch({ type: BOAT_ACTIONS.DESTROYER });
     } else if (boatState.boat === "destroyer") {
       setMessage("Your Turn");
@@ -241,25 +251,42 @@ const Game = () => {
   const handlePlace = (e) => {
     const id = e.srcElement.dataset.id;
     const index = findIndex(playerGrid, "data-id", id);
-    const getSize = () => {
+    const getInfo = () => {
       if (boatRef.current.classList.contains(BOAT_STYLE.CARRIER)) {
-        return BOAT_SIZE.CARRIER - 1;
+        return {
+          size: BOAT_SIZE.CARRIER - 1,
+          boat: BOAT_ACTIONS.CARRIER,
+        };
       }
       if (boatRef.current.classList.contains(BOAT_STYLE.BATTLESHIP)) {
-        return BOAT_SIZE.BATTLESHIP - 1;
+        return {
+          size: BOAT_SIZE.BATTLESHIP - 1,
+          boat: BOAT_ACTIONS.BATTLESHIP,
+        };
       }
       if (boatRef.current.classList.contains(BOAT_STYLE.CRUISER)) {
-        return BOAT_SIZE.CRUISER - 1;
+        return {
+          size: BOAT_SIZE.CRUISER - 1,
+          boat: BOAT_ACTIONS.CRUISER,
+        };
       }
       if (boatRef.current.classList.contains(BOAT_STYLE.SUBMARINE)) {
-        return BOAT_SIZE.SUBMARINE - 1;
+        return {
+          size: BOAT_SIZE.SUBMARINE - 1,
+          boat: BOAT_ACTIONS.SUBMARINE,
+        };
       }
       if (boatRef.current.classList.contains(BOAT_STYLE.DESTROYER)) {
-        return BOAT_SIZE.DESTROYER - 1;
+        return {
+          size: BOAT_SIZE.DESTROYER - 1,
+          boat: BOAT_ACTIONS.DESTROYER,
+        };
       }
     };
 
-    const size = getSize();
+    const info = getInfo();
+    const size = info.size;
+    const boat = info.boat;
 
     const checked = checkPlacement(index, isHorizontal, size);
 
@@ -267,14 +294,33 @@ const Game = () => {
       setErrorMessage(checked.message);
       setIsSetValid(false);
     } else {
+      boatRef.current.classList = "";
       setIsSetValid(true);
       setErrorMessage(checked.message);
 
       for (let i = 0; i <= size; i++) {
         if (isHorizontal) {
-          playerGrid[index[0]][index[1] + i].classList.toggle("taken");
+          playerGrid[index[0]][index[1] + i].classList.add(
+            boat,
+            "taken",
+            "horizontal"
+          );
+          if (i === 0) {
+            playerGrid[index[0]][index[1] + i].classList.toggle("h-head");
+          } else if (i === size) {
+            playerGrid[index[0]][index[1] + i].classList.toggle("h-tail");
+          }
         } else {
-          playerGrid[index[0] + i][index[1]].classList.toggle("taken");
+          playerGrid[index[0] + i][index[1]].classList.add(
+            boat,
+            "taken",
+            "vertical"
+          );
+          if (i === 0) {
+            playerGrid[index[0] + i][index[1]].classList.toggle("v-head");
+          } else if (i === size) {
+            playerGrid[index[0] + i][index[1]].classList.toggle("v-tail");
+          }
         }
       }
     }
@@ -290,14 +336,24 @@ const Game = () => {
       <div className="Game-Container">
         <div className="container-1">
           <div className="grids">
-            <div
-              className="battleship-grid player-grid"
-              ref={playerGridRef}
-            ></div>
-            <div
-              className="battleship-grid shooting-grid"
-              ref={shootingGridRef}
-            ></div>
+            <div>
+              <div>
+                <p className="grid-tag">Player</p>
+              </div>
+              <div
+                className="battleship-grid player-grid"
+                ref={playerGridRef}
+              ></div>
+            </div>
+            <div>
+              <div>
+                <p className="grid-tag">Enemy</p>
+              </div>
+              <div
+                className="battleship-grid shooting-grid"
+                ref={shootingGridRef}
+              ></div>
+            </div>
           </div>
           <div className="actions">
             <button className="shoot">Shoot</button>
@@ -306,7 +362,7 @@ const Game = () => {
         <div className="Guide-1">
           {message ? (
             <>
-              <p>{message}</p>
+              <p className="message">{message}</p>
               <p className="error">{errorMessage}</p>
               {isSetValid && (
                 <button

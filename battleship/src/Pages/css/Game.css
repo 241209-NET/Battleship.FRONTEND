@@ -1,7 +1,20 @@
+.actions {
+  flex: 0.5;
+  height: 10rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-left: 40vmin;
+}
+
 @media (min-width: 700px) {
   .container-1 {
     display: flex;
     align-items: center;
+  }
+
+  .actions {
+    padding-left: 10vmin;
   }
 }
 
@@ -15,6 +28,11 @@
   height: 100%;
 }
 
+.grid-tag {
+  margin: 0;
+  margin-bottom: .3vmin;
+}
+
 #root {
   width: 100%;
   height: 100%;
@@ -26,14 +44,6 @@
   flex-wrap: wrap;
   width: 100%;
   flex: 2;
-}
-
-.actions {
-  flex: 0.5;
-  height: 10rem;
-  display: flex;
-  justify-content: start;
-  align-items: center;
 }
 
 .shoot {
@@ -51,8 +61,10 @@
 }
 
 .battleship-grid {
-  margin: 4vmin;
+  margin: 3vmin;
+  margin-top: 0;
   display: grid;
+  border: 1.5vmin solid hsl(200, 100%, 50%);
   background-color: hsl(200, 100%, 50%);
   grid-template-rows: repeat(10, 5.6vmin);
   grid-template-columns: repeat(10, 5.6vmin);
@@ -101,7 +113,7 @@
   margin: 1vmin;
   width: calc(5.6vmin * var(--width, 1));
   height: calc(5.6vmin * var(--height, 1));
-  border-radius: 2.3vmin;
+  border-radius: 5.3vmin;
 }
 
 .destroyer-container {
@@ -165,4 +177,81 @@
 
 .error {
   color: rgb(245, 20, 20);
+  margin-bottom: 0;
+}
+
+.message {
+  color: green;
+  margin-top: 0;
+}
+
+.h-head,
+.h-head::before {
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.h-tail,
+.h-tail::before {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.v-head,
+.v-head::before {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.v-tail,
+.v-tail::before {
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.taken.vertical::before,
+.taken.horizontal::before {
+  content: "";
+  position: absolute;
+  border: 0.3vmin solid white;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+}
+
+.taken.horizontal::before {
+  animation: ripplesY 3s linear infinite;
+  border-left: none;
+  border-right: none;
+}
+
+.taken.vertical::before {
+  animation: ripplesX 3s linear infinite;
+  border-top: none;
+  border-bottom: none;
+}
+
+@keyframes ripplesX {
+  0% {
+    opacity: 1;
+    transform: scaleX(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1.5);
+  }
+}
+
+@keyframes ripplesY {
+  0% {
+    opacity: 1;
+    transform: scaleY(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleY(1.5);
+  }
 }
