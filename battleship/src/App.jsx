@@ -14,10 +14,11 @@ function App() {
         <h2 className="title">Battleship</h2>
         <NavBar />
         <div className="body">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path='/Game' element={<Game />}/>
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path='/Game' element={<Game/>}>
+            </Route>
+          </Routes>
         </div>
       </div>
       </Router>

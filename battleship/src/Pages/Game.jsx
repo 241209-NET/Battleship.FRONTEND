@@ -72,6 +72,13 @@ const findIndex = (array, property, value) => {
   return [rowIndex, colIndex];
 };
 
+const randomNumberInRange = (min, max) => {
+  return Math.floor(Math.random()
+      * (max - min + 1)) + min;
+};
+
+
+
 const checkPlacement = (index, horizontal, size) => {
   const [column, row] = index;
 
@@ -164,6 +171,34 @@ const Game = () => {
     });
   };
 
+  const computerships = (index, isHorizontal, curboat, size) => {
+    for (let i = 0; i <= size; i++) {
+      if (isHorizontal) {
+        shootingGrid[index[0]][index[1] + i].classList.add(
+          curboat,
+          "taken",
+          "horizontal"
+        );
+        if (i === 0) {
+          shootingGrid[index[0]][index[1] + i].classList.toggle("h-head");
+        } else if (i === size) {
+          shootingGrid[index[0]][index[1] + i].classList.toggle("h-tail");
+        }
+      } else {
+        shootingGrid[index[0] + i][index[1]].classList.add(
+          curboat,
+          "taken",
+          "vertical"
+        );
+        if (i === 0) {
+          shootingGrid[index[0] + i][index[1]].classList.toggle("v-head");
+        } else if (i === size) {
+          shootingGrid[index[0] + i][index[1]].classList.toggle("v-tail");
+        }
+      }
+    }
+  }
+
   // Generating Grids on first render
   useEffect(() => {
     const genrateGrids = () => {
@@ -173,7 +208,152 @@ const Game = () => {
       }
     };
 
+    const checkIfShipExists = (index, horizontal, size) => {
+      if(horizontal)
+      {
+        for(let i = 0; i < size; i++)
+        {
+          if(shootingGrid[index[0]][index[1] + i].classList.contains("taken"))
+            return true;
+        }
+      }
+      else
+      {
+        for(let i = 0; i < size; i++)
+        {
+          if(shootingGrid[index[0] + i][index[1]].classList.contains("taken"))
+            return true;
+        }
+      }
+
+      return false;
+    }
+    const boatPlacement = () => {
+      let x = randomNumberInRange(1, 2);
+      let loop = true;
+      if( x == 1)
+        isHorizontal = true;
+      else
+        isHorizontal = false;
+      while(loop)
+      {
+        let z = randomNumberInRange(0,9);
+        let y = randomNumberInRange(0,9);
+        let curboat = BOAT_ACTIONS.CARRIER;
+        let size = BOAT_SIZE.CARRIER - 1;
+        let index = [z, y];
+        if(checkPlacement(index, isHorizontal, size).valid && !checkIfShipExists(index, isHorizontal, size+1))
+        {
+          console.log("we can place at " + z + " " + y);
+          console.log("horizontal? " + isHorizontal);
+          console.log(curboat);
+          computerships(index, isHorizontal, curboat, size);
+          loop = false;
+        }
+        else 
+          console.log("looping");
+      }
+      x = randomNumberInRange(1, 2);
+      loop = true;
+      if( x == 1)
+        isHorizontal = true;
+      else
+        isHorizontal = false;
+      while(loop)
+      {
+        let z = randomNumberInRange(0,9);
+        let y = randomNumberInRange(0,9);
+        let curboat = BOAT_ACTIONS.BATTLESHIP;
+        let size = BOAT_SIZE.BATTLESHIP - 1;
+        let index = [z, y];
+        if(checkPlacement(index, isHorizontal, size).valid && !checkIfShipExists(index, isHorizontal, size+1))
+        {
+          console.log("we can place at " + z + " " + y);
+          console.log("horizontal? " + isHorizontal);
+          console.log(curboat);
+          computerships(index, isHorizontal, curboat, size);
+          loop = false;
+        }
+        else 
+          console.log("looping");
+      }
+      x = randomNumberInRange(1, 2);
+      loop = true;
+      if( x == 1)
+        isHorizontal = true;
+      else
+        isHorizontal = false;
+      while(loop)
+      {
+        let z = randomNumberInRange(0,9);
+        let y = randomNumberInRange(0,9);
+        let curboat = BOAT_ACTIONS.CRUISER;
+        let size = BOAT_SIZE.CRUISER - 1;
+        let index = [z, y];
+        if(checkPlacement(index, isHorizontal, size).valid && !checkIfShipExists(index, isHorizontal, size +1))
+        {
+          console.log("we can place at " + z + " " + y);
+          console.log("horizontal? " + isHorizontal);
+          console.log(curboat);
+          computerships(index, isHorizontal, curboat, size);
+          loop = false;
+        }
+        else 
+          console.log("looping");
+      }
+      x = randomNumberInRange(1, 2);
+      loop = true;
+      if( x == 1)
+        isHorizontal = true;
+      else
+        isHorizontal = false;
+      while(loop)
+      {
+        let z = randomNumberInRange(0,9);
+        let y = randomNumberInRange(0,9);
+        let curboat = BOAT_ACTIONS.SUBMARINE;
+        let size = BOAT_SIZE.SUBMARINE - 1;
+        let index = [z, y];
+        if(checkPlacement(index, isHorizontal, size).valid && !checkIfShipExists(index, isHorizontal, size+1))
+        {
+          console.log("we can place at " + z + " " + y);
+          console.log("horizontal? " + isHorizontal);
+          console.log(curboat);
+          computerships(index, isHorizontal, curboat, size);
+          loop = false;
+        }
+        else 
+          console.log("looping");
+      }
+      x = randomNumberInRange(1, 2);
+      loop = true;
+      if( x == 1)
+        isHorizontal = true;
+      else
+        isHorizontal = false;
+      while(loop)
+      {
+        let z = randomNumberInRange(0,9);
+        let y = randomNumberInRange(0,9);
+        let curboat = BOAT_ACTIONS.DESTROYER;
+        let size = BOAT_SIZE.DESTROYER - 1;
+        let index = [z, y];
+        if(checkPlacement(index, isHorizontal, size).valid && !checkIfShipExists(index, isHorizontal, size+1))
+        {
+          console.log("we can place at " + z + " " + y);
+          console.log("horizontal? " + isHorizontal);
+          console.log(curboat);
+          computerships(index, isHorizontal, curboat, size);
+          loop = false;
+        }
+        else 
+          console.log("looping");
+      }
+      
+    }
+
     genrateGrids();
+    boatPlacement();
   }, []);
 
   // This will trigger the game to start
