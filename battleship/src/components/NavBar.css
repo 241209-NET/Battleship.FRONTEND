@@ -1,21 +1,56 @@
-.navBar {
-  top: 5%; /* Aligns it to the top of the screen */
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  width: 100%; /* Covers the full width of the screen */
-  height: 5%; /* Adjust as needed for navbar height */
-  font-size: 27px;
-  /*background-color: darkblue;*/
-  z-index: 1000; /* Ensures it stays above other content */
+  flex: 1;
+}
+
+.navbar {
+  background-color: #1a3d6d; 
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
 }
 
 .Nav {
   display: flex;
-  justify-content: space-evenly;
+  gap: 20px; 
 }
 
-.navBar div {
-  width: 100%;
+.link {
+  text-decoration: none;
+  color: #ffffff; 
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background-color: #f2c94c; 
+  color: #1a3d6d; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.link:active {
+  background-color: #f29e4c; 
+  color: #ffffff;
+}
+
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .Nav {
+    flex-direction: column;
+    gap: 15px;
+  }
 }

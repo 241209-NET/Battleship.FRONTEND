@@ -2,11 +2,11 @@ import './NavBar.css';
 import { Link } from 'react-router'
 export default function NavBar() {
     return (
-        <nav className="navBar">
-            <div  className='Nav'>
-                <Link to="/login" className='link'>Login</Link>
-                <Link to="/signup" className='link'>Signup</Link>
-                <Link to="/home" className='link'>Home</Link>
+        <nav className="navbar">
+          <div class="logo">⚓ Battleship</div>
+            <div className='Nav'>
+                <Link to="/Home" className='link'>Home</Link>
+                <Link to="/Game" className='link'>New Game</Link>
               </div>
         </nav>
       );

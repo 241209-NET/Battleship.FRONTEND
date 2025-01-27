@@ -1,5 +1,11 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import "./css/Game.css";
+import axios from "axios";
+
+// User ID
+const User = {
+  ID: 1,
+};
 
 // Reducer utilities
 const BOAT_ACTIONS = {
@@ -96,9 +102,13 @@ const checkPlacement = (index, horizontal, size) => {
 };
 
 let isHorizontal = true;
-let isPlayerTurn
+let isPlayerTurn;
 
 const Game = () => {
+  let _gameId;
+  let _playerGridId;
+  let _enemyGridId;
+
   //Game Set Up
   const [message, setMessage] = useState();
   const [isSetValid, setIsSetValid] = useState(false);
@@ -187,14 +197,89 @@ const Game = () => {
         }
       }
     }
+    const postingEnemyBoat = async () => {
+      await axios.post(`${import.meta.env.VITE_API}/api/Ship`, {
+        boardId: _enemyGridId,
+        type: curboat,
+        length: size + 1,
+        isHorizontal: isHorizontal,
+        startX: index[0],
+        startY: index[1],
+      });
+    };
+
+    setTimeout(() => {
+      postingEnemyBoat();
+    }, 50);
   };
 
   // Generating Grids on first render
   useEffect(() => {
+    // Creating Game
+    const dateTime = new Date();
+    const now = `${dateTime.getFullYear()}-${String(
+      dateTime.getMonth() + 1
+    ).padStart(2, "0")}-${String(dateTime.getDate()).padStart(2, "0")} ${String(
+      dateTime.getHours()
+    ).padStart(2, "0")}:${String(dateTime.getMinutes()).padStart(
+      2,
+      "0"
+    )}:${String(dateTime.getSeconds()).padStart(2, "0")}`;
+
+    const postGame = async () => {
+      await axios
+        .post(`${import.meta.env.VITE_API}/api/Game`, {
+          userId: User.ID,
+          status: false,
+          playerTurn: true,
+          startTime: now,
+          endTime: "",
+        })
+        .then((res) => {
+          _gameId = res.data.id;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    postGame();
+
     const genrateGrids = () => {
       if (playerGridRef.current && shootingGridRef.current) {
         createGrid(playerGridRef.current, playerGrid, handlePlace);
+        const postPlayerBoard = async () => {
+          await axios
+            .post(`${import.meta.env.VITE_API}/api/Board`, {
+              gameId: _gameId,
+              userId: User.ID,
+              isComputerBoard: false,
+            })
+            .then((res) => {
+              _playerGridId = res.data.id;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        postPlayerBoard();
+
         createGrid(shootingGridRef.current, shootingGrid, handleSelectShot);
+        const postEnemyBoard = async () => {
+          const res = await axios
+            .post(`${import.meta.env.VITE_API}/api/Board`, {
+              gameId: _gameId,
+              userId: User.ID,
+              isComputerBoard: true,
+            })
+            .then((res) => {
+              _enemyGridId = res.data.id;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        postEnemyBoard();
       }
     };
 
@@ -227,9 +312,6 @@ const Game = () => {
           checkPlacement(index, isHorizontal, size).valid &&
           !checkIfShipExists(index, isHorizontal, size + 1)
         ) {
-          console.log("we can place at " + z + " " + y);
-          console.log("horizontal? " + isHorizontal);
-          console.log(curboat);
           computerships(index, isHorizontal, curboat, size);
           loop = false;
         } else console.log("looping");
@@ -275,8 +357,10 @@ const Game = () => {
       isHorizontal = true;
     };
 
-    genrateGrids();
-    boatPlacement();
+    setTimeout(() => {
+      genrateGrids();
+      boatPlacement();
+    }, 50);
   }, []);
 
   // This will trigger the game to start
@@ -346,7 +430,7 @@ const Game = () => {
       );
       dispatch({ type: BOAT_ACTIONS.DESTROYER });
     } else if (boatState.boat === "destroyer") {
-      isPlayerTurn = true
+      isPlayerTurn = true;
       setMessage("Your Turn. Click in any square in the enemy grid to shoot.");
     }
   };
@@ -427,6 +511,19 @@ const Game = () => {
           }
         }
       }
+
+      const postingPlayerBoat = async () => {
+        await axios.post(`${import.meta.env.VITE_API}/api/Ship`, {
+          boardId: _playerGridId,
+          type: boat,
+          length: size + 1,
+          isHorizontal: isHorizontal,
+          startX: index[0],
+          startY: index[1],
+        });
+      };
+
+      postingPlayerBoat();
     }
   };
 
@@ -470,6 +567,7 @@ const Game = () => {
         }
       }
     }
+    
     if (isPlayerTurn) {
       const id = e.srcElement.dataset.id;
       const index = findIndex(shootingGrid, "data-id", id);
@@ -486,17 +584,16 @@ const Game = () => {
           return hasClass;
         })
       ) {
-        console.log("hit")
+        console.log("hit");
         shootingGrid[index[0]][index[1]].classList.toggle("hit");
       } else {
-        console.log("miss")
+        console.log("miss");
         shootingGrid[index[0]][index[1]].classList.toggle("miss");
       }
 
       //isPlayerTurn = false;
       computerfire();
       isPlayerTurn = true;
-
     }
   };
 
