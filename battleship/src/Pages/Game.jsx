@@ -539,8 +539,35 @@ const Game = () => {
 
     let matchedClass = "";
 
-    console.log(isPlayerTurn);
-
+    console.log(isPlayerTurn)
+    const computerfire = () => {
+      let compTurn = true;
+      while(compTurn)
+      {
+        let x = randomNumberInRange(0, 9);
+        let y = randomNumberInRange(0, 9);
+        if(!playerGrid[x][y].classList.contains("hit") && !playerGrid[x][y].classList.contains("miss"))
+        {
+          compTurn = false;
+          if (
+            classes.some((className) => {
+              const hasClass =
+              playerGrid[x][y].classList.contains(className);
+    
+              if (hasClass) {
+                matchedClass = className;
+              }
+    
+              return hasClass;
+            })
+          )
+            playerGrid[x][y].classList.toggle("hit");
+          else
+            playerGrid[x][y].classList.toggle("miss");
+        }
+      }
+    }
+    
     if (isPlayerTurn) {
       const id = e.srcElement.dataset.id;
       const index = findIndex(shootingGrid, "data-id", id);
@@ -564,7 +591,9 @@ const Game = () => {
         shootingGrid[index[0]][index[1]].classList.toggle("miss");
       }
 
-      isPlayerTurn = false;
+      //isPlayerTurn = false;
+      computerfire();
+      isPlayerTurn = true;
     }
   };
 

@@ -173,6 +173,20 @@
   background-color: hsl(0, 0%, 80%);
 }
 
+.hit {
+  position: relative;
+  background-color: red;
+}
+.miss {
+  position: relative;
+  background-color: white;
+}
+
+.sunk {
+  position: relative;
+  background-color: black;
+}
+
 .square:hover {
   background-color: hsl(200, 92%, 60%) !important;
 }
