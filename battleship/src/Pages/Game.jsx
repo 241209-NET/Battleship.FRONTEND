@@ -566,6 +566,7 @@ const Game = () => {
             playerGrid[x][y].classList.toggle("miss");
         }
       }
+      isPlayerTurn = true;
     }
     
     if (isPlayerTurn) {
@@ -591,9 +592,8 @@ const Game = () => {
         shootingGrid[index[0]][index[1]].classList.toggle("miss");
       }
 
-      //isPlayerTurn = false;
+      isPlayerTurn = false;
       computerfire();
-      isPlayerTurn = true;
     }
   };
 

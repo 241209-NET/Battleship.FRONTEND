@@ -1,11 +1,3 @@
-.hit {
-  background-color: rgb(238, 74, 74) !important;
-}
-
-.miss {
-  background-color: white !important;
-}
-
 .actions {
   flex: 0.5;
   height: 10rem;
@@ -27,8 +19,8 @@
 }
 
 .shooting-grid > .taken {
-  background-color: hsl(200, 100%, 50%) !important;
-  border-radius: 0 !important;
+  background-color: hsl(200, 100%, 50%);
+  border-radius: 0 ;
 }
 
 .container-1 {
@@ -175,7 +167,7 @@
 
 .hit {
   position: relative;
-  background-color: red;
+  background-color: red !important;
 }
 .miss {
   position: relative;
