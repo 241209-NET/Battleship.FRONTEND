@@ -96,6 +96,7 @@ const checkPlacement = (index, horizontal, size) => {
 };
 
 let isHorizontal = true;
+let isPlayerTurn
 
 const Game = () => {
   //Game Set Up
@@ -171,22 +172,14 @@ const Game = () => {
   const computerships = (index, isHorizontal, curboat, size) => {
     for (let i = 0; i <= size; i++) {
       if (isHorizontal) {
-        shootingGrid[index[0]][index[1] + i].classList.add(
-          curboat,
-          "taken",
-          "horizontal"
-        );
+        shootingGrid[index[0]][index[1] + i].classList.add(curboat, "taken");
         if (i === 0) {
           shootingGrid[index[0]][index[1] + i].classList.toggle("h-head");
         } else if (i === size) {
           shootingGrid[index[0]][index[1] + i].classList.toggle("h-tail");
         }
       } else {
-        shootingGrid[index[0] + i][index[1]].classList.add(
-          curboat,
-          "taken",
-          "vertical"
-        );
+        shootingGrid[index[0] + i][index[1]].classList.add(curboat, "taken");
         if (i === 0) {
           shootingGrid[index[0] + i][index[1]].classList.toggle("v-head");
         } else if (i === size) {
@@ -278,6 +271,8 @@ const Game = () => {
         BOAT_ACTIONS.DESTROYER,
         BOAT_SIZE.DESTROYER
       );
+
+      isHorizontal = true;
     };
 
     genrateGrids();
@@ -351,7 +346,8 @@ const Game = () => {
       );
       dispatch({ type: BOAT_ACTIONS.DESTROYER });
     } else if (boatState.boat === "destroyer") {
-      setMessage("Your Turn");
+      isPlayerTurn = true
+      setMessage("Your Turn. Click in any square in the enemy grid to shoot.");
     }
   };
 
@@ -434,9 +430,45 @@ const Game = () => {
     }
   };
 
-  // This will handle every shot made
+  // This will handle any shot
   const handleSelectShot = (e) => {
-    console.log("clicked");
+    const classes = [
+      "carrier",
+      "battleship",
+      "cruiser",
+      "submarine",
+      "destroyer",
+    ];
+
+    let matchedClass = "";
+
+    console.log(isPlayerTurn)
+
+    if (isPlayerTurn) {
+      const id = e.srcElement.dataset.id;
+      const index = findIndex(shootingGrid, "data-id", id);
+
+      if (
+        classes.some((className) => {
+          const hasClass =
+            shootingGrid[index[0]][index[1]].classList.contains(className);
+
+          if (hasClass) {
+            matchedClass = className;
+          }
+
+          return hasClass;
+        })
+      ) {
+        console.log("hit")
+        shootingGrid[index[0]][index[1]].classList.toggle("hit");
+      } else {
+        console.log("miss")
+        shootingGrid[index[0]][index[1]].classList.toggle("miss");
+      }
+
+      isPlayerTurn = false
+    }
   };
 
   return (
@@ -462,9 +494,6 @@ const Game = () => {
                 ref={shootingGridRef}
               ></div>
             </div>
-          </div>
-          <div className="actions">
-            <button className="shoot">Shoot</button>
           </div>
         </div>
         <div className="Guide-1">
