@@ -37,6 +37,17 @@ export default function Register() {
             console.log(json);            
             setMsg(`${name} Registered Succesfully. Login with ${email}`);
             
+        } else if(response.status == 400) {
+            
+            let errors = Array.from(json.errors);
+            let error_msg = '';
+            console.log(json);
+            console.log(errors);
+            // console.log(typeof errors);
+            errors.forEach((error) => {
+                error_msg += error.description + "\n";
+            });            
+            setMsg(error_msg);
         } else {            
             setMsg(json.message);
         }
