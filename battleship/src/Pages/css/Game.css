@@ -70,6 +70,7 @@
   margin-top: 0;
   display: grid;
   border: 1.5vmin solid hsl(200, 100%, 50%);
+  border-radius: 20px;
   background-color: hsl(200, 100%, 50%);
   grid-template-rows: repeat(10, 5.6vmin);
   grid-template-columns: repeat(10, 5.6vmin);
@@ -195,13 +196,27 @@
 }
 
 .error {
-  color: rgb(245, 20, 20);
-  margin-bottom: 0;
+  color: white; 
+  background-color: red; 
+  margin: 0 auto;
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border-radius: 20px; 
+  text-align: center; 
+  width: fit-content; 
 }
 
 .message {
-  color: green;
-  margin-top: 0;
+  color: white; 
+  background-color: green; 
+  margin: 0 auto;
+  padding: 10px 20px; 
+  font-size: 16px; 
+  font-weight: bold; 
+  border-radius: 20px; 
+  text-align: center; 
+  width: fit-content; 
 }
 
 .h-head,
