@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
 import "../css/App.css";
 import { BarChart } from "@mui/x-charts/BarChart";
-import Scoreboard from '../components/Scoreboard';
-import GameList from '../components/GameList';
-import PlayerStats from '../components/PlayerStats';
+import Scoreboard from "../components/Scoreboard";
+import GameList from "../components/GameList";
+import PlayerStats from "../components/PlayerStats";
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState(true);
   const toggleLeader = () => {
-      setLeaderboard(!leaderboard);
-  }
+    setLeaderboard(!leaderboard);
+  };
 
   const [data, setData] = useState([7, 4]);
-  const [name, setUsername] = useState("name sample")
-  const [email, setEmail] = useState(sessionStorage.getItem("username"))
-  const [id, setId] = useState(sessionStorage.getItem("userid"))
+  const [name, setUsername] = useState("name sample");
+  const [email, setEmail] = useState(sessionStorage.getItem("username"));
+  const [id, setId] = useState(sessionStorage.getItem("userid"));
 
   useEffect(() => {
     // get wins and losses
   }, []);
-
 
   return (
     <div className="home">
@@ -51,9 +50,11 @@ export default function Home() {
         </div>
       </div>
       <div className="other-info">
-                    <PlayerStats></PlayerStats>
-           { leaderboard ? <Scoreboard></Scoreboard> : <GameList></GameList> }
-           <button id="LeaderToggle" onClick={toggleLeader}>{leaderboard ? "My Games" : "Leaderboard"} </button>
+        <PlayerStats></PlayerStats>
+        {leaderboard ? <Scoreboard></Scoreboard> : <GameList></GameList>}
+        <button id="LeaderToggle" onClick={toggleLeader}>
+          {leaderboard ? "My Games" : "Leaderboard"}{" "}
+        </button>
       </div>
     </div>
   );
