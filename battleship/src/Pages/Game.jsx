@@ -5,6 +5,11 @@ import axios from "axios";
 // User ID
 const User = {
   ID: sessionStorage.getItem("userid"),
+  TOKEN: sessionStorage.getItem("token"),
+};
+
+const Auth = {
+  Authorization: `Bearer ${User.TOKEN}`,
 };
 
 // Reducer utilities
@@ -198,14 +203,18 @@ const Game = () => {
       }
     }
     const postingEnemyBoat = async () => {
-      await axios.post(`${import.meta.env.VITE_API}/api/Ship`, {
-        boardId: _enemyGridId,
-        type: curboat,
-        length: size + 1,
-        isHorizontal: isHorizontal,
-        startX: index[0],
-        startY: index[1],
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API}/api/Ship`,
+        {
+          boardId: _enemyGridId,
+          type: curboat,
+          length: size + 1,
+          isHorizontal: isHorizontal,
+          startX: index[0],
+          startY: index[1],
+        },
+        { headers: Auth }
+      );
     };
 
     setTimeout(() => {
@@ -228,13 +237,17 @@ const Game = () => {
 
     const postGame = async () => {
       await axios
-        .post(`${import.meta.env.VITE_API}/api/Game`, {
-          userId: User.ID,
-          status: false,
-          playerTurn: true,
-          startTime: now,
-          endTime: "",
-        })
+        .post(
+          `${import.meta.env.VITE_API}/api/Game`,
+          {
+            userId: User.ID,
+            status: false,
+            playerTurn: true,
+            startTime: now,
+            endTime: "",
+          },
+          { headers: Auth }
+        )
         .then((res) => {
           _gameId = res.data.id;
         })
@@ -250,11 +263,15 @@ const Game = () => {
         createGrid(playerGridRef.current, playerGrid, handlePlace);
         const postPlayerBoard = async () => {
           await axios
-            .post(`${import.meta.env.VITE_API}/api/Board`, {
-              gameId: _gameId,
-              userId: User.ID,
-              isComputerBoard: false,
-            })
+            .post(
+              `${import.meta.env.VITE_API}/api/Board`,
+              {
+                gameId: _gameId,
+                userId: User.ID,
+                isComputerBoard: false,
+              },
+              { headers: Auth }
+            )
             .then((res) => {
               _playerGridId = res.data.id;
             })
@@ -267,11 +284,15 @@ const Game = () => {
         createGrid(shootingGridRef.current, shootingGrid, handleSelectShot);
         const postEnemyBoard = async () => {
           const res = await axios
-            .post(`${import.meta.env.VITE_API}/api/Board`, {
-              gameId: _gameId,
-              userId: User.ID,
-              isComputerBoard: true,
-            })
+            .post(
+              `${import.meta.env.VITE_API}/api/Board`,
+              {
+                gameId: _gameId,
+                userId: User.ID,
+                isComputerBoard: true,
+              },
+              { headers: Auth }
+            )
             .then((res) => {
               _enemyGridId = res.data.id;
             })
@@ -513,14 +534,18 @@ const Game = () => {
       }
 
       const postingPlayerBoat = async () => {
-        await axios.post(`${import.meta.env.VITE_API}/api/Ship`, {
-          boardId: _playerGridId,
-          type: boat,
-          length: size + 1,
-          isHorizontal: isHorizontal,
-          startX: index[0],
-          startY: index[1],
-        });
+        await axios.post(
+          `${import.meta.env.VITE_API}/api/Ship`,
+          {
+            boardId: _playerGridId,
+            type: boat,
+            length: size + 1,
+            isHorizontal: isHorizontal,
+            startX: index[0],
+            startY: index[1],
+          },
+          { headers: Auth }
+        );
       };
 
       postingPlayerBoat();
@@ -539,36 +564,35 @@ const Game = () => {
 
     let matchedClass = "";
 
-    console.log(isPlayerTurn)
+    console.log(isPlayerTurn);
     const computerfire = () => {
       let compTurn = true;
-      while(compTurn)
-      {
+      while (compTurn) {
         let x = randomNumberInRange(0, 9);
         let y = randomNumberInRange(0, 9);
-        if(!playerGrid[x][y].classList.contains("hit") && !playerGrid[x][y].classList.contains("miss"))
-        {
+        if (
+          !playerGrid[x][y].classList.contains("hit") &&
+          !playerGrid[x][y].classList.contains("miss")
+        ) {
           compTurn = false;
           if (
             classes.some((className) => {
-              const hasClass =
-              playerGrid[x][y].classList.contains(className);
-    
+              const hasClass = playerGrid[x][y].classList.contains(className);
+
               if (hasClass) {
                 matchedClass = className;
               }
-    
+
               return hasClass;
             })
           )
             playerGrid[x][y].classList.toggle("hit");
-          else
-            playerGrid[x][y].classList.toggle("miss");
+          else playerGrid[x][y].classList.toggle("miss");
         }
       }
       isPlayerTurn = true;
-    }
-    
+    };
+
     if (isPlayerTurn) {
       const id = e.srcElement.dataset.id;
       const index = findIndex(shootingGrid, "data-id", id);
