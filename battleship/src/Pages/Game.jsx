@@ -626,7 +626,7 @@ const Game = () => {
           {message ? (
             <>
               <p className="message">{message}</p>
-              <p className="error">{errorMessage}</p>
+              {errorMessage && <p className="error">{errorMessage}</p>}
               {isSetValid && (
                 <button
                   className="set-boat"

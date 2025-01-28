@@ -13,17 +13,6 @@ h2 {
 .title {
   width: 100%;
 }
-.background {
-  position: fixed; /* Ensure the background stays fixed behind content */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: -1; /* Push the background behind other elements */
-}
 
 a {
   font-weight: 500;
@@ -32,4 +21,60 @@ a {
 }
 a:hover {
   color: #535bf2;
+}
+
+section {
+  position:absolute;
+  width: 100%;
+  height: 40px;
+  bottom: 160px;
+  z-index: -2;
+}
+
+.waterContainer {
+  width: 100%;
+  height: 200px;
+  background-color: #80c5de;
+  box-shadow: inset 0 0 120px #1c637c;
+  z-index: -3;
+}
+
+.waves {
+  position: absolute;
+  bottom: 400px;
+  left: -150px;
+  display: flex;
+  width: 100%;
+}
+
+.wave {
+  flex: 1;
+  position: relative;
+}
+
+.wave::before,
+.wave::after {
+  content: ' ';
+  width: 450px;
+  height: 400px;
+  background-color: white;
+  border-radius: 150px;
+  position: absolute; 
+  top: 0;
+  left: 0;
+  animation: wave 10s infinite linear;
+  overflow: hidden;
+}
+
+.wave::after {
+  animation-delay: 0.5s; 
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

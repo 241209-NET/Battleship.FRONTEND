@@ -1,9 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router'; // Correct import
-import Game from './Pages/Game';
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router"; // Correct import
+import Game from "./Pages/Game";
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Waves from "./components/Waves"
 import Signin from './components/Signin';
+import "./App.css";
 
 // Component to manage conditional NavBar rendering
 function AppContent() {
@@ -21,6 +27,7 @@ function AppContent() {
           <Route path="/Game" element={<Game />} />
         </Routes>
       </div>
+      <Waves/>
     </div>
   );
 }
@@ -33,4 +40,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
