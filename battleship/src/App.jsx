@@ -3,6 +3,7 @@ import Game from './Pages/Game';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import './App.css';
+import Signin from './components/Signin';
 
 // Component to manage conditional NavBar rendering
 function AppContent() {
@@ -15,6 +16,7 @@ function AppContent() {
       {location.pathname !== "/" && <NavBar />}
       <div className="body">
         <Routes>
+          <Route path="/" element={<Signin />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Game" element={<Game />} />
         </Routes>
