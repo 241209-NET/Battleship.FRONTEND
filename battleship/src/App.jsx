@@ -8,6 +8,7 @@ import Game from "./Pages/Game";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Waves from "./components/Waves"
+import Signin from './components/Signin';
 import "./App.css";
 
 // Component to manage conditional NavBar rendering
@@ -21,6 +22,7 @@ function AppContent() {
       {location.pathname !== "/" && <NavBar />}
       <div className="body">
         <Routes>
+          <Route path="/" element={<Signin />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Game" element={<Game />} />
         </Routes>
