@@ -6,10 +6,10 @@ import {
 } from "react-router"; // Correct import
 import Game from "./Pages/Game";
 import NavBar from "./components/NavBar";
-import Home from "./components/Home";
+import Home from "./Pages/Home";
 import Waves from "./components/Waves"
-import Signin from './components/Signin';
-import "./App.css";
+import Signin from './Pages/Signin';
+import "./css/App.css";
 
 // Component to manage conditional NavBar rendering
 function AppContent() {

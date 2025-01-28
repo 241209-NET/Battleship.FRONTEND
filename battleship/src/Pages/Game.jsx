@@ -4,7 +4,7 @@ import axios from "axios";
 
 // User ID
 const User = {
-  ID: 1,
+  ID: sessionStorage.getItem("userid"),
 };
 
 // Reducer utilities
@@ -210,7 +210,7 @@ const Game = () => {
 
     setTimeout(() => {
       postingEnemyBoat();
-    }, 50);
+    }, 100);
   };
 
   // Generating Grids on first render
@@ -360,7 +360,7 @@ const Game = () => {
     setTimeout(() => {
       genrateGrids();
       boatPlacement();
-    }, 50);
+    }, 100);
   }, []);
 
   // This will trigger the game to start

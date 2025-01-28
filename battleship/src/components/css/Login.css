@@ -7,11 +7,6 @@
     gap: 2rem;
 }
 
-.login-register {
-    display: flex;
-    gap: 2rem;
-}
-
 .login-form, .register-form {
     text-align: center;
     display: flex;
@@ -19,8 +14,10 @@
     margin: auto;
     width: 30vw;
     padding: 2vw 1vw;
-    background-color: rgb(250, 194, 194);
-    border-radius: 0 0 10px 10px;
+    background-color: #1a3d6d;
+    box-shadow: inset 0 0 120px #1c637c;
+    border-radius: 20px;
+    color: white;
 }
 
 input {
@@ -29,6 +26,7 @@ input {
     padding: 1vw 1vw;
     outline: none;
     margin: 5px;
+    width: 35vmin;
 }
 
 .login-button, .register-button {
@@ -41,4 +39,6 @@ input {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    border-radius: 2vmin;
+    margin-top: 2vmin;
 }

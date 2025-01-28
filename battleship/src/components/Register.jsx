@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import './Login.css';
+import './css/Login.css';
 
 export default function Register() {
 
@@ -32,18 +32,13 @@ export default function Register() {
 
         const json = await response.json();
 
-        if (response.ok){
-            
-            console.log(json);            
+        if (response.ok){           
             setMsg(`${name} Registered Succesfully. Login with ${email}`);
             
         } else if(response.status == 400) {
             
             let errors = Array.from(json.errors);
             let error_msg = '';
-            console.log(json);
-            console.log(errors);
-            // console.log(typeof errors);
             errors.forEach((error) => {
                 error_msg += error.description + "\n";
             });            
@@ -69,7 +64,7 @@ export default function Register() {
                     />
                 </label>
                 <label>
-                    <p>Email ID</p>
+                    <p>Email</p>
                     <input 
                         type="text"
                         required

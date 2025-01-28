@@ -1,10 +1,8 @@
 
 import React, { useState } from 'react';
-import './Login.css';
+import './css/Login.css';
 import { useNavigate } from 'react-router';
-// import jwt_decode from "jwt-decode";
 import { jwtDecode } from 'jwt-decode';
-// import { useJwt } from 'react-jwt';
 
 
 export default function Login() {
@@ -34,18 +32,12 @@ export default function Login() {
         );
 
         const json = await response.json();
-        // const { decodedToken, isExpired, reEvaluateToken } = useJwt(json['token']);
-        // console.log(decodedToken);
 
         if (response.ok){
-            
-            console.log(json);
-            sessionStorage.setItem('userjwttoken', json['token']);
+            sessionStorage.setItem('token', json['token']);
             sessionStorage.setItem('username', username);
-            // const decoded = jwt_decode(json['token']);
-            const token = sessionStorage.getItem("userjwttoken");
-            let decodedToken = jwtDecode(token);
-            console.log(decodedToken);            
+            const token = sessionStorage.getItem("token");
+            let decodedToken = jwtDecode(token);          
             sessionStorage.setItem("userid",decodedToken.UserID);
             setErrormsg('');
             navigate('/Home');
@@ -65,7 +57,7 @@ export default function Login() {
         <h1>Log In</h1>
             <form className='login-form' onSubmit={handleSubmit}>
                 <label>
-                    <p>Username</p>
+                    <p>Email</p>
                     <input 
                         type="text"
                         required
