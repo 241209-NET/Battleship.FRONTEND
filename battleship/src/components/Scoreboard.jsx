@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './css/Scoreboard.css';
 
 const Scoreboard = () => {
     const [users, setUsers] = useState([]);
+    const [name, setName] = useState(sessionStorage.getItem("accountName"));
+
+
 
     const getData = async () => {
         try
         {
-            const res = await axios.get('http://localhost:5298/api/User'); // will need to change
+            const res = await axios.get(`${import.meta.env.VITE_API}/api/User`); // will need to change
             setUsers(res.data);
             console.log(res.data);
         } catch (e)
@@ -23,15 +27,17 @@ const Scoreboard = () => {
 
     const scores = users.map(user => ({
         username: user.accountName,
-        wins: user.numWins,
-        losses: user.numLosses,
-        ratio: user.numLosses == 0 ? user.numWins : user.numWins / user.numLosses
+        wins: user.wins,
+        losses: user.losses,
+        ratio: user.losses === 0 ? user.wins : user.wins / user.losses
     }));
 
     const sortedScores = scores.sort((a,b) => b.ratio - a.ratio);
     return (
         <div id="leader">
-            <h2>Leaderboard</h2>
+            <div id="leaderTitle">
+                <h2>Leaderboard</h2>
+            </div>
                 <table className="homeTable">
                     <thead>
                         <tr>
@@ -44,7 +50,7 @@ const Scoreboard = () => {
                     </thead>
                     <tbody>
                         {sortedScores.map((user, index) => (
-                            <tr key= {index + 1}>
+                            <tr key= {index + 1}  className={ name == user.username ? "loggedUser" : "notLoggedUser"}>
                                 <td>{index + 1}</td>
                                 <td>{user.username}</td>
                                 <td>{user.wins}</td>

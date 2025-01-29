@@ -2,7 +2,6 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { useNavigate  } from "react-router";
 import "./css/Game.css";
 import axios from "axios";
-
 // User ID
 const User = {
   ID: sessionStorage.getItem("userid"),
@@ -635,9 +634,7 @@ const Game = () => {
         {
           UpdateWinLoss(1, 0);
           setMessage("You Win!");
-          setTimeout(() => {
-            navigate("/Home")
-          }, 1000);
+          navigate("/Home");
         }
       for(let i = 0; i < 10; i++)
         {
@@ -656,9 +653,7 @@ const Game = () => {
         {
           UpdateWinLoss(0, 1);
           setErrorMessage("Computer Won!");
-          setTimeout(() => {
-            navigate("/Home")
-          }, 1000);
+          navigate("/Home");
         }
       isPlayerTurn = true;
     };
