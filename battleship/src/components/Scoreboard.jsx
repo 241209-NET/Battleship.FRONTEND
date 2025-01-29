@@ -11,7 +11,10 @@ const Scoreboard = () => {
     const getData = async () => {
         try
         {
-            const res = await axios.get(`${import.meta.env.VITE_API}/api/User`); // will need to change
+            setTimeout(2000);
+            const res = await axios.get(`${import.meta.env.VITE_API}/api/User`); 
+            
+                
             setUsers(res.data);
             console.log(res.data);
         } catch (e)

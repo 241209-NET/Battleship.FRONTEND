@@ -2,6 +2,9 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { useNavigate  } from "react-router";
 import "./css/Game.css";
 import axios from "axios";
+
+let compShipsSunk = 0;
+let playerShipsSunk = 0;
 // User ID
 const User = {
   ID: sessionStorage.getItem("userid"),
@@ -230,6 +233,9 @@ const Game = () => {
   // Generating Grids on first render
   useEffect(() => {
     // Creating Game
+    playerShipsSunk = 0;
+    compShipsSunk = 0;
+    isPlayerTurn = null;
     const dateTime = new Date();
     const now = `${dateTime.getFullYear()}-${String(
       dateTime.getMonth() + 1
@@ -562,6 +568,7 @@ const Game = () => {
     }
   };
 
+
   // This will handle any shot
   const handleSelectShot = (e) => {
     const classes = [
@@ -614,8 +621,9 @@ const Game = () => {
           console.log(e);
         }
       };  
-      let compShipsSunk = 0;
-      let playerShipsSunk = 0;
+
+      playerShipsSunk = 0;
+      compShipsSunk = 0;
       for(let i = 0; i < 10; i++)
       {
         for(let j = 0; j < 10; j++)
@@ -634,7 +642,10 @@ const Game = () => {
         {
           UpdateWinLoss(1, 0);
           setMessage("You Win!");
+          playerwin = false;
+          computerwin = false;
           navigate("/Home");
+          
         }
       for(let i = 0; i < 10; i++)
         {
@@ -653,6 +664,8 @@ const Game = () => {
         {
           UpdateWinLoss(0, 1);
           setErrorMessage("Computer Won!");
+          playerwin = false;
+          computerwin = false;
           navigate("/Home");
         }
       isPlayerTurn = true;
