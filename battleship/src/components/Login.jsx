@@ -21,7 +21,7 @@ export default function Login() {
         // console.log(userdata);
 
         const response = await fetch(
-            'http://localhost:5298/login',
+            `${import.meta.env.VITE_API}/login`,
             {
                 method: 'POST',
                 headers: {
