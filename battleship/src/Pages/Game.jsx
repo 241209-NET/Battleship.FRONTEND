@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import { useNavigate  } from "react-router";
+import { useNavigate } from "react-router";
 import "./css/Game.css";
 import axios from "axios";
 
@@ -15,14 +15,7 @@ const Auth = {
   Authorization: `Bearer ${User.TOKEN}`,
 };
 
-const classes = [
-  "carrier",
-  "battleship",
-  "cruiser",
-  "submarine",
-  "destroyer",
-];
-
+const classes = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
 
 // Reducer utilities
 const BOAT_ACTIONS = {
@@ -108,6 +101,9 @@ const checkPlacement = (index, horizontal, size, grid) => {
   const newColumn = horizontal ? column : column + size;
 
   if (horizontal) {
+    if (newRow > 9) {
+      return { valid: false, message: "Out of Bounds, try again" };
+    }
     for (let i = 0; i <= size; i++) {
       if (grid) {
         if (grid[index[0]][index[1] + i]) {
@@ -117,11 +113,11 @@ const checkPlacement = (index, horizontal, size, grid) => {
         }
       }
     }
-
-    if (newRow > 9) {
+  } else {
+    if (newColumn > 9) {
       return { valid: false, message: "Out of Bounds, try again" };
     }
-  } else {
+
     for (let i = 0; i <= size; i++) {
       if (grid) {
         if (grid[index[0] + i][index[1]]) {
@@ -130,9 +126,6 @@ const checkPlacement = (index, horizontal, size, grid) => {
           }
         }
       }
-    }
-    if (newColumn > 9) {
-      return { valid: false, message: "Out of Bounds, try again" };
     }
   }
 
@@ -613,48 +606,43 @@ const Game = () => {
     );
   };
 
-  
-  
-  async function UpdateWinLoss (win, loss) {
+  async function UpdateWinLoss(win, loss) {
     try {
       console.log("wins are " + win);
       console.log("losses are " + loss);
-      const res = await axios
-      .patch(
-        `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
-      )
-    }
-    catch (e)
-    {
+      const res = await axios.patch(
+        `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,
+        {},
+        { headers: Auth }
+      );
+    } catch (e) {
       console.log(e);
     }
-  };  
+  }
 
   function CheckWin() {
     playerShipsSunk = 0;
     compShipsSunk = 0;
-      for(let i = 0; i < 10; i++)
-      {
-        for(let j = 0; j < 10; j++)
-        {
-          if(shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
-          if(playerGrid[i][j].classList.contains("hit")) playerShipsSunk++;
-          if(compShipsSunk == 17) playerwin = true;
-          if(playerShipsSunk == 17) computerwin = true;
-        }
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
+        if (playerGrid[i][j].classList.contains("hit")) playerShipsSunk++;
+        if (compShipsSunk == 17) playerwin = true;
+        if (playerShipsSunk == 17) computerwin = true;
       }
-      if(playerwin) {
-        UpdateWinLoss(1, 0);
-        alert("player wins");
-        setMessage("You Win!");
-        navigate("/Home");
-      }
-      if(computerwin) {
-        UpdateWinLoss(0, 1);
-        alert("Computer wins");
-        setErrorMessage("Computer Won!");
-        navigate("/Home");
-      }
+    }
+    if (playerwin) {
+      UpdateWinLoss(1, 0);
+      alert("player wins");
+      setMessage("You Win!");
+      navigate("/Home");
+    }
+    if (computerwin) {
+      UpdateWinLoss(0, 1);
+      alert("Computer wins");
+      setErrorMessage("Computer Won!");
+      navigate("/Home");
+    }
   }
 
   const computerfire = () => {
@@ -685,7 +673,7 @@ const Game = () => {
         }
       }
     }
-    
+
     isPlayerTurn = true;
     setMessage("Your Turn");
     setErrorMessage("");
