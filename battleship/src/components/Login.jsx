@@ -39,6 +39,7 @@ export default function Login() {
             const token = sessionStorage.getItem("token");
             let decodedToken = jwtDecode(token);          
             sessionStorage.setItem("userid",decodedToken.UserID);
+            sessionStorage.setItem("accountName", decodedToken.UserAccount);
             setErrormsg('');
             navigate('/Home');
         } else {

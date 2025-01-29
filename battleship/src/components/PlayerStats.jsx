@@ -29,8 +29,8 @@ const PlayerStats = () => {
     return (
         <div id="stats">
             <h2>Player Stats</h2>
-                <h3>{stats.wins}</h3>
-                <h3>{stats.losses}</h3>
+                <h3>Wins: {stats.wins}</h3>
+                <h3>Losses: {stats.losses}</h3>
         </div>
 );
 }

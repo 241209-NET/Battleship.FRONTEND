@@ -3,43 +3,63 @@ import "../css/App.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 import Scoreboard from "../components/Scoreboard";
 import GameList from "../components/GameList";
-import PlayerStats from "../components/PlayerStats";
+import axios from "axios";
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState(true);
   const toggleLeader = () => {
     setLeaderboard(!leaderboard);
   };
-
-  const [data, setData] = useState([7, 4]);
-  const [name, setUsername] = useState("name sample");
   const [email, setEmail] = useState(sessionStorage.getItem("username"));
-  const [id, setId] = useState(sessionStorage.getItem("userid"));
+  
 
-  useEffect(() => {
-    // get wins and losses
-  }, []);
+  const [stats, setStats] = useState(["", 0, 0]);
+  const tokenfromsesh = sessionStorage.getItem("token");
+
+    const getData = async () => {
+        try
+        {
+            const res = await axios.get(`${import.meta.env.VITE_API}/Score`, {
+                headers: {
+                    Authorization: `Bearer ${tokenfromsesh}`
+                }
+            });
+            setStats(res.data);
+            console.log(res.data.accountName);
+        } catch (e)
+        {
+            console.error("Could not fetch Data: " , e);
+        }
+        
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    console.log(stats.accountName);
 
   return (
     <div className="home">
       <div className="graph-user">
         <div className="user-info">
-          <h2>Welcome {name}</h2>
+          <h2>Welcome {stats.accountName}</h2>
           <p>Email: {email}</p>
-          <p>Id: {id}</p>
+          <p>Wins: {stats.wins}</p>
+          <p>Losses: {stats.losses}</p>
         </div>
         <div className="graph">
           <BarChart
             xAxis={[
               {
                 id: "barCategories",
-                data: ["wins", "losses"],
+                data: ["Wins", "Losses"],
                 scaleType: "band",
               },
             ]}
             series={[
               {
-                data: data,
+                data: [stats.wins, stats.losses],
                 color: "#006eff",
               },
             ]}
@@ -50,7 +70,7 @@ export default function Home() {
         </div>
       </div>
       <div className="other-info">
-        <PlayerStats></PlayerStats>
+        
         {leaderboard ? <Scoreboard></Scoreboard> : <GameList></GameList>}
         <button id="LeaderToggle" onClick={toggleLeader}>
           {leaderboard ? "My Games" : "Leaderboard"}{" "}

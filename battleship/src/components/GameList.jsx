@@ -9,7 +9,7 @@ const GameList = () => {
     const getData = async () => {
         try
         {
-            const res = await axios.get('http://localhost:5298/api/Game', {
+            const res = await axios.get(`${import.meta.env.VITE_API}/api/Game`, {
                 headers: {
                     Authorization: `Bearer ${tokenfromsesh}`
                 }
@@ -33,7 +33,7 @@ const GameList = () => {
 
     
 
-    const unfinished = games.filter(g => g.status === false);
+    const unfinished = games.filter(g => g.status === true);
     
 
     return (
@@ -52,14 +52,14 @@ const GameList = () => {
                 {unfinshedGames ? 
                     unfinished.map((g, index) => (
                         <tr key={index}>
-                            <td>{g.status == true ? "In Progress" : "Completed"}</td>
+                            <td>{g.status == false ? "In Progress" : "Completed"}</td>
                             <td>{g.startTime}</td>
                             <td>{g.endTime}</td>
                         </tr>
                     )) :
                 games.map((g, index) => (
                     <tr key={index}>
-                        <td>{g.status == true ? "In Progress" : "Completed"}</td>
+                        <td>{g.status == false ? "In Progress" : "Completed"}</td>
                         <td>{g.startTime}</td>
                         <td>{g.endTime}</td>
                     </tr>

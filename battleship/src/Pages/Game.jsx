@@ -1,7 +1,10 @@
 import { useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate  } from "react-router";
 import "./css/Game.css";
 import axios from "axios";
 
+let compShipsSunk = 0;
+let playerShipsSunk = 0;
 // User ID
 const User = {
   ID: sessionStorage.getItem("userid"),
@@ -134,6 +137,7 @@ const Game = () => {
   let _gameId;
   let _playerGridId;
   let _enemyGridId;
+  const navigate = useNavigate();
 
   //Game Set Up
   const [message, setMessage] = useState();
@@ -248,6 +252,9 @@ const Game = () => {
   // Generating Grids on first render
   useEffect(() => {
     // Creating Game
+    playerShipsSunk = 0;
+    compShipsSunk = 0;
+    isPlayerTurn = null;
     const dateTime = new Date();
     const now = `${dateTime.getFullYear()}-${String(
       dateTime.getMonth() + 1
@@ -326,7 +333,6 @@ const Game = () => {
         postEnemyBoard();
       }
     };
-
     const checkIfShipExists = (index, horizontal, size) => {
       if (horizontal) {
         for (let i = 0; i < size; i++) {
@@ -583,6 +589,7 @@ const Game = () => {
     }
   };
 
+
   // This will handle any shot
   const handleSelectShot = (e) => {
     const postShot = async (x, y, b_id, status) => {
@@ -640,8 +647,8 @@ const Game = () => {
           }
         }
       }
-      let compShipsSunk = 0;
-      let playerShipsSunk = 0;
+      compShipsSunk = 0;
+      playerShipsSunk = 0;
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
           if (shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
@@ -654,6 +661,69 @@ const Game = () => {
           if (playerShipsSunk == 17) alert("computer wins");
         }
       }
+
+      async function UpdateWinLoss (win, loss) {
+        try {
+          console.log("wins are " + win);
+          console.log("losses are " + loss);
+          const res = await axios
+          .patch(
+            `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
+          )
+        }
+        catch (e)
+        {
+          console.log(e);
+        }
+      };  
+
+      playerShipsSunk = 0;
+      compShipsSunk = 0;
+      for(let i = 0; i < 10; i++)
+      {
+        for(let j = 0; j < 10; j++)
+        {
+            if(shootingGrid[i][j].classList.contains("hit"))
+              compShipsSunk++;
+            if(compShipsSunk == 17)
+              {
+                console.log("hi");
+                playerwin = true;
+                console.log("updated");
+              }
+        }
+      }
+      if(playerwin)
+        {
+          UpdateWinLoss(1, 0);
+          setMessage("You Win!");
+          playerwin = false;
+          computerwin = false;
+          navigate("/Home");
+          
+        }
+      for(let i = 0; i < 10; i++)
+        {
+          for(let j = 0; j < 10; j++)
+          {
+              if(playerGrid[i][j].classList.contains("hit"))
+                playerShipsSunk++;
+              if(playerShipsSunk == 17)
+              {
+                console.log("hi");
+                computerwin = true;
+              }
+          }
+        }
+        if(computerwin)
+        {
+          UpdateWinLoss(0, 1);
+          setErrorMessage("Computer Won!");
+          playerwin = false;
+          computerwin = false;
+          navigate("/Home");
+        }
+
       isPlayerTurn = true;
       setMessage("Your Turn");
       setErrorMessage("");

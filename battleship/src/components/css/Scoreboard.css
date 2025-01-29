@@ -1,0 +1,21 @@
+.loggedUser{
+    background-color: lightyellow;
+}
+
+.notLoggedUser{
+    color: darkblue;
+}
+
+#leaderTitle{
+    background-color:#1f467a;
+    color: white;
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+}
+
+#home{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
