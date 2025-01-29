@@ -19,3 +19,54 @@
     align-items: center;
 }
 
+#leader {
+    width: 100%;
+    margin: 20px auto;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+#leaderTitle h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.homeTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.homeTable thead {
+    background: #007bff;
+    color: white;
+}
+
+.homeTable th, 
+.homeTable td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.homeTable tbody tr:hover {
+    background: #f1f1f1;
+}
+
+.loggedUser {
+    background: #28a745 !important;
+    color: white;
+    font-weight: bold;
+}
+
+.notLoggedUser {
+    background: #fff;
+    color: #333;
+}
