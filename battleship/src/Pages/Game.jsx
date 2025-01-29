@@ -89,17 +89,36 @@ const randomNumberInRange = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const checkPlacement = (index, horizontal, size) => {
+const checkPlacement = (index, horizontal, size, grid) => {
   const [column, row] = index;
 
   const newRow = horizontal ? row + size : row;
   const newColumn = horizontal ? column : column + size;
 
   if (horizontal) {
+    for (let i = 0; i <= size; i++) {
+      if (grid) {
+        if (grid[index[0]][index[1] + i]) {
+          if (grid[index[0]][index[1] + i].classList.contains("taken")) {
+            return { valid: false, message: "Cannot place " };
+          }
+        }
+      }
+    }
+
     if (newRow > 9) {
       return { valid: false, message: "Out of Bounds, try again" };
     }
   } else {
+    for (let i = 0; i <= size; i++) {
+      if (grid) {
+        if (grid[index[0] + i][index[1]]) {
+          if (grid[index[0] + i][index[1]].classList.contains("taken")) {
+            return { valid: false, message: "Cannot place " };
+          }
+        }
+      }
+    }
     if (newColumn > 9) {
       return { valid: false, message: "Out of Bounds, try again" };
     }
@@ -338,13 +357,15 @@ const Game = () => {
           !checkIfShipExists(index, isHorizontal, size + 1)
         ) {
           computerships(index, isHorizontal, curboat, size);
-          setComputerShip([...computerShip, {
-            x: z,
-            y: y,
-            horizontal: isHorizontal
-          }]);
+          setComputerShip([
+            ...computerShip,
+            {
+              x: z,
+              y: y,
+              horizontal: isHorizontal,
+            },
+          ]);
           loop = false;
-          console.log(computerShip);
         } else console.log("looping");
       }
     };
@@ -507,7 +528,7 @@ const Game = () => {
     const size = info.size;
     const boat = info.boat;
 
-    const checked = checkPlacement(index, isHorizontal, size);
+    const checked = checkPlacement(index, isHorizontal, size, playerGrid);
 
     if (!checked.valid) {
       setErrorMessage(checked.message);
@@ -564,6 +585,21 @@ const Game = () => {
 
   // This will handle any shot
   const handleSelectShot = (e) => {
+    const postShot = async (x, y, b_id, status) => {
+      await axios.post(
+        `${import.meta.env.VITE_API}/api/CellFired`,
+        {
+          x: x,
+          y: y,
+          boardId: b_id,
+          status: status,
+        },
+        {
+          headers: Auth,
+        }
+      );
+    };
+
     const classes = [
       "carrier",
       "battleship",
@@ -574,7 +610,6 @@ const Game = () => {
 
     let matchedClass = "";
 
-    console.log(isPlayerTurn);
     const computerfire = () => {
       let compTurn = true;
       while (compTurn) {
@@ -595,61 +630,76 @@ const Game = () => {
 
               return hasClass;
             })
-          )
+          ) {
             playerGrid[x][y].classList.toggle("hit");
-          else playerGrid[x][y].classList.toggle("miss");
+            postShot(x, y, _enemyGridId, "hit");
+            compTurn = true;
+          } else {
+            playerGrid[x][y].classList.toggle("miss");
+            postShot(x, y, _enemyGridId, "miss");
+          }
         }
       }
       let compShipsSunk = 0;
       let playerShipsSunk = 0;
-      for(let i = 0; i < 10; i++)
-      {
-        for(let j = 0; j < 10; j++)
-        {
-            if(shootingGrid[i][j].classList.contains("hit"))
-              compShipsSunk++;
-            if(compShipsSunk == 17)
-              alert("player wins");
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          if (shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
+          if (compShipsSunk == 17) alert("player wins");
         }
       }
-      for(let i = 0; i < 10; i++)
-        {
-          for(let j = 0; j < 10; j++)
-          {
-              if(playerGrid[i][j].classList.contains("hit"))
-                playerShipsSunk++;
-              if(playerShipsSunk == 17)
-                alert("computer wins");
-          }
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          if (playerGrid[i][j].classList.contains("hit")) playerShipsSunk++;
+          if (playerShipsSunk == 17) alert("computer wins");
         }
+      }
       isPlayerTurn = true;
+      setMessage("Your Turn");
+      setErrorMessage("");
     };
 
-    if (isPlayerTurn) {
+    while (isPlayerTurn) {
       const id = e.srcElement.dataset.id;
       const index = findIndex(shootingGrid, "data-id", id);
-
       if (
-        classes.some((className) => {
-          const hasClass =
-            shootingGrid[index[0]][index[1]].classList.contains(className);
-
-          if (hasClass) {
-            matchedClass = className;
-          }
-
-          return hasClass;
-        })
+        !shootingGrid[index[0]][index[1]].classList.contains("hit") &&
+        !shootingGrid[index[0]][index[1]].classList.contains("miss")
       ) {
-        console.log("hit");
-        shootingGrid[index[0]][index[1]].classList.toggle("hit");
-      } else {
-        console.log("miss");
-        shootingGrid[index[0]][index[1]].classList.toggle("miss");
-      }
+        isPlayerTurn = false;
 
-      isPlayerTurn = false;
-      computerfire();
+        if (
+          classes.some((className) => {
+            const hasClass =
+              shootingGrid[index[0]][index[1]].classList.contains(className);
+
+            if (hasClass) {
+              matchedClass = className;
+            }
+
+            return hasClass;
+          })
+        ) {
+          shootingGrid[index[0]][index[1]].classList.toggle("hit");
+          postShot(index[0], index[1], _playerGridId, "hit");
+          isPlayerTurn = true;
+        } else {
+          shootingGrid[index[0]][index[1]].classList.toggle("miss");
+          postShot(index[0], index[1], _playerGridId, "miss");
+        }
+
+        if (!isPlayerTurn) {
+          setMessage("Wait...");
+          setErrorMessage("Enemy Turn");
+        }
+
+        setTimeout(() => {
+          if (!isPlayerTurn) {
+            computerfire();
+          }
+        }, 1000);
+        return;
+      } else break;
     }
   };
 
