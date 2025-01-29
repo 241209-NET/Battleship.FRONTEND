@@ -20,6 +20,7 @@
     border-radius: 20px;
     color: white;
     justify-content: center;
+    position: relative; 
 }
 
 input {
@@ -39,13 +40,23 @@ input {
     left: 0; 
     right: 0; 
     margin-left: auto; 
-    margin-right: auto;
+    margin-right: auto; 
     width: 40%;
     position: absolute; 
-    bottom: 5%;
+    bottom: 5%; 
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 2vmin;
     border-radius: 2vmin;
+}
+
+.login-button:hover, .register-button:hover{
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.login-button:active, .register-button:active{
+    background: #004494;
+    transform: scale(0.98);
 }
