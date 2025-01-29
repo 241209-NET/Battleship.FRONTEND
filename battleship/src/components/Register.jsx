@@ -53,7 +53,7 @@ export default function Register() {
         <h1>Register Here</h1>
             <form className='register-form' onSubmit={handleSubmit}>
                 <label>
-                    <p>Full Name</p>
+                    <p>Username</p>
                     <input 
                         type="text"
                         required
