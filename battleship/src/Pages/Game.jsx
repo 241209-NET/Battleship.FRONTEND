@@ -36,6 +36,8 @@ const BOAT_SIZE = {
   SUBMARINE: 3,
   DESTROYER: 2,
 };
+let playerwin = false;
+let computerwin = false;
 
 function shipReducer(boatState, action) {
   switch (action.type) {
@@ -118,6 +120,8 @@ const Game = () => {
   const [message, setMessage] = useState();
   const [isSetValid, setIsSetValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [computerShip, setComputerShip] = useState([]);
+  const [playerShips, setPlayerShips] = useState([]);
   const [boatState, dispatch] = useReducer(shipReducer, {
     style: "",
     boat: "",
@@ -334,7 +338,13 @@ const Game = () => {
           !checkIfShipExists(index, isHorizontal, size + 1)
         ) {
           computerships(index, isHorizontal, curboat, size);
+          setComputerShip([...computerShip, {
+            x: z,
+            y: y,
+            horizontal: isHorizontal
+          }]);
           loop = false;
+          console.log(computerShip);
         } else console.log("looping");
       }
     };
@@ -590,6 +600,28 @@ const Game = () => {
           else playerGrid[x][y].classList.toggle("miss");
         }
       }
+      let compShipsSunk = 0;
+      let playerShipsSunk = 0;
+      for(let i = 0; i < 10; i++)
+      {
+        for(let j = 0; j < 10; j++)
+        {
+            if(shootingGrid[i][j].classList.contains("hit"))
+              compShipsSunk++;
+            if(compShipsSunk == 17)
+              alert("player wins");
+        }
+      }
+      for(let i = 0; i < 10; i++)
+        {
+          for(let j = 0; j < 10; j++)
+          {
+              if(playerGrid[i][j].classList.contains("hit"))
+                playerShipsSunk++;
+              if(playerShipsSunk == 17)
+                alert("computer wins");
+          }
+        }
       isPlayerTurn = true;
     };
 
