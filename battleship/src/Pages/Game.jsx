@@ -15,6 +15,15 @@ const Auth = {
   Authorization: `Bearer ${User.TOKEN}`,
 };
 
+const classes = [
+  "carrier",
+  "battleship",
+  "cruiser",
+  "submarine",
+  "destroyer",
+];
+
+
 // Reducer utilities
 const BOAT_ACTIONS = {
   CARRIER: "carrier",
@@ -589,146 +598,101 @@ const Game = () => {
     }
   };
 
-
-  // This will handle any shot
-  const handleSelectShot = (e) => {
-    const postShot = async (x, y, b_id, status) => {
-      await axios.post(
-        `${import.meta.env.VITE_API}/api/CellFired`,
-        {
-          x: x,
-          y: y,
-          boardId: b_id,
-          status: status,
-        },
-        {
-          headers: Auth,
-        }
-      );
-    };
-
-    const classes = [
-      "carrier",
-      "battleship",
-      "cruiser",
-      "submarine",
-      "destroyer",
-    ];
-
-    let matchedClass = "";
-
-    const computerfire = () => {
-      let compTurn = true;
-      while (compTurn) {
-        let x = randomNumberInRange(0, 9);
-        let y = randomNumberInRange(0, 9);
-        if (
-          !playerGrid[x][y].classList.contains("hit") &&
-          !playerGrid[x][y].classList.contains("miss")
-        ) {
-          compTurn = false;
-          if (
-            classes.some((className) => {
-              const hasClass = playerGrid[x][y].classList.contains(className);
-
-              if (hasClass) {
-                matchedClass = className;
-              }
-
-              return hasClass;
-            })
-          ) {
-            playerGrid[x][y].classList.toggle("hit");
-            postShot(x, y, _enemyGridId, "hit");
-            compTurn = true;
-          } else {
-            playerGrid[x][y].classList.toggle("miss");
-            postShot(x, y, _enemyGridId, "miss");
-          }
-        }
+  const postShot = async (x, y, b_id, status) => {
+    await axios.post(
+      `${import.meta.env.VITE_API}/api/CellFired`,
+      {
+        x: x,
+        y: y,
+        boardId: b_id,
+        status: status,
+      },
+      {
+        headers: Auth,
       }
-      compShipsSunk = 0;
-      playerShipsSunk = 0;
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-          if (shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
-          if (compShipsSunk == 17) alert("player wins");
-        }
-      }
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-          if (playerGrid[i][j].classList.contains("hit")) playerShipsSunk++;
-          if (playerShipsSunk == 17) alert("computer wins");
-        }
-      }
+    );
+  };
 
-      async function UpdateWinLoss (win, loss) {
-        try {
-          console.log("wins are " + win);
-          console.log("losses are " + loss);
-          const res = await axios
-          .patch(
-            `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
-          )
-        }
-        catch (e)
-        {
-          console.log(e);
-        }
-      };  
+  
+  
+  async function UpdateWinLoss (win, loss) {
+    try {
+      console.log("wins are " + win);
+      console.log("losses are " + loss);
+      const res = await axios
+      .patch(
+        `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
+      )
+    }
+    catch (e)
+    {
+      console.log(e);
+    }
+  };  
 
-      playerShipsSunk = 0;
-      compShipsSunk = 0;
+  function CheckWin() {
+    playerShipsSunk = 0;
+    compShipsSunk = 0;
       for(let i = 0; i < 10; i++)
       {
         for(let j = 0; j < 10; j++)
         {
-            if(shootingGrid[i][j].classList.contains("hit"))
-              compShipsSunk++;
-            if(compShipsSunk == 17)
-              {
-                console.log("hi");
-                playerwin = true;
-                console.log("updated");
-              }
+          if(shootingGrid[i][j].classList.contains("hit")) compShipsSunk++;
+          if(playerGrid[i][j].classList.contains("hit")) playerShipsSunk++;
+          if(compShipsSunk == 17) playerwin = true;
+          if(playerShipsSunk == 17) computerwin = true;
         }
       }
-      if(playerwin)
-        {
-          UpdateWinLoss(1, 0);
-          setMessage("You Win!");
-          playerwin = false;
-          computerwin = false;
-          navigate("/Home");
-          
-        }
-      for(let i = 0; i < 10; i++)
-        {
-          for(let j = 0; j < 10; j++)
-          {
-              if(playerGrid[i][j].classList.contains("hit"))
-                playerShipsSunk++;
-              if(playerShipsSunk == 17)
-              {
-                console.log("hi");
-                computerwin = true;
-              }
-          }
-        }
-        if(computerwin)
-        {
-          UpdateWinLoss(0, 1);
-          setErrorMessage("Computer Won!");
-          playerwin = false;
-          computerwin = false;
-          navigate("/Home");
-        }
+      if(playerwin) {
+        UpdateWinLoss(1, 0);
+        alert("player wins");
+        setMessage("You Win!");
+        navigate("/Home");
+      }
+      if(computerwin) {
+        UpdateWinLoss(0, 1);
+        alert("Computer wins");
+        setErrorMessage("Computer Won!");
+        navigate("/Home");
+      }
+  }
 
-      isPlayerTurn = true;
-      setMessage("Your Turn");
-      setErrorMessage("");
-    };
+  const computerfire = () => {
+    let compTurn = true;
+    while (compTurn) {
+      let x = randomNumberInRange(0, 9);
+      let y = randomNumberInRange(0, 9);
+      if (
+        !playerGrid[x][y].classList.contains("hit") &&
+        !playerGrid[x][y].classList.contains("miss")
+      ) {
+        compTurn = false;
+        if (
+          classes.some((className) => {
+            const hasClass = playerGrid[x][y].classList.contains(className);
 
+            return hasClass;
+          })
+        ) {
+          playerGrid[x][y].classList.toggle("hit");
+          postShot(x, y, _enemyGridId, "hit");
+          CheckWin();
+          console.log("This IS AFTER computer CHECK WIN!!!");
+          compTurn = true;
+        } else {
+          playerGrid[x][y].classList.toggle("miss");
+          postShot(x, y, _enemyGridId, "miss");
+        }
+      }
+    }
+    
+    isPlayerTurn = true;
+    setMessage("Your Turn");
+    setErrorMessage("");
+  };
+
+  // This will handle any shot
+  const handleSelectShot = (e) => {
     while (isPlayerTurn) {
       const id = e.srcElement.dataset.id;
       const index = findIndex(shootingGrid, "data-id", id);
@@ -743,15 +707,13 @@ const Game = () => {
             const hasClass =
               shootingGrid[index[0]][index[1]].classList.contains(className);
 
-            if (hasClass) {
-              matchedClass = className;
-            }
-
             return hasClass;
           })
         ) {
           shootingGrid[index[0]][index[1]].classList.toggle("hit");
           postShot(index[0], index[1], _playerGridId, "hit");
+          CheckWin();
+          console.log("This IS AFTER player CHECK WIN!!!");
           isPlayerTurn = true;
         } else {
           shootingGrid[index[0]][index[1]].classList.toggle("miss");
