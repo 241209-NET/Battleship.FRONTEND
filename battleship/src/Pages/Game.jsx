@@ -607,13 +607,8 @@ const Game = () => {
           console.log("losses are " + loss);
           const res = await axios
           .patch(
-            `${import.meta.env.VITE_API}/UpdateScore`,
-            {
-              wins: win,
-              losses: loss
-            },
-            { headers: Auth }
-          ).then(navigate("/Home"));
+            `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
+          )
         }
         catch (e)
         {
@@ -639,6 +634,10 @@ const Game = () => {
       if(playerwin)
         {
           UpdateWinLoss(1, 0);
+          setMessage("You Win!");
+          setTimeout(() => {
+            navigate("/Home")
+          }, 1000);
         }
       for(let i = 0; i < 10; i++)
         {
@@ -656,6 +655,10 @@ const Game = () => {
         if(computerwin)
         {
           UpdateWinLoss(0, 1);
+          setErrorMessage("Computer Won!");
+          setTimeout(() => {
+            navigate("/Home")
+          }, 1000);
         }
       isPlayerTurn = true;
     };
