@@ -73,7 +73,7 @@ export default function Home() {
       <div className="other-info">
         
         {leaderboard ? <Scoreboard></Scoreboard> : <GameList></GameList>}
-        <button id="LeaderToggle" onClick={toggleLeader}>
+        <button className="button"id="LeaderToggle" onClick={toggleLeader}>
           {leaderboard ? "My Games" : "Leaderboard"}{" "}
         </button>
       </div>

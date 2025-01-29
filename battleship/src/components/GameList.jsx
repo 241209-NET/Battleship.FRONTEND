@@ -39,7 +39,7 @@ const GameList = () => {
     return (
         <div id="log">
         <h2>Game Log</h2>
-        <button id ="resumeButton" onClick={toggleDisplay}>Show Resumable Games</button>
+        <button id ="resumeButton" className='button' onClick={toggleDisplay}>Show Resumable Games</button>
         <table className="homeTable">
             <thead>
                 <tr>
