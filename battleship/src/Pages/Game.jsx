@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate  } from "react-router";
 import "./css/Game.css";
 import axios from "axios";
 
@@ -115,6 +116,7 @@ const Game = () => {
   let _gameId;
   let _playerGridId;
   let _enemyGridId;
+  const navigate = useNavigate();
 
   //Game Set Up
   const [message, setMessage] = useState();
@@ -307,7 +309,6 @@ const Game = () => {
         postEnemyBoard();
       }
     };
-
     const checkIfShipExists = (index, horizontal, size) => {
       if (horizontal) {
         for (let i = 0; i < size; i++) {
@@ -600,6 +601,20 @@ const Game = () => {
           else playerGrid[x][y].classList.toggle("miss");
         }
       }
+      async function UpdateWinLoss (win, loss) {
+        try {
+          console.log("wins are " + win);
+          console.log("losses are " + loss);
+          const res = await axios
+          .patch(
+            `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,{},{headers: Auth}
+          )
+        }
+        catch (e)
+        {
+          console.log(e);
+        }
+      };  
       let compShipsSunk = 0;
       let playerShipsSunk = 0;
       for(let i = 0; i < 10; i++)
@@ -609,9 +624,21 @@ const Game = () => {
             if(shootingGrid[i][j].classList.contains("hit"))
               compShipsSunk++;
             if(compShipsSunk == 17)
-              alert("player wins");
+              {
+                console.log("hi");
+                playerwin = true;
+                console.log("updated");
+              }
         }
       }
+      if(playerwin)
+        {
+          UpdateWinLoss(1, 0);
+          setMessage("You Win!");
+          setTimeout(() => {
+            navigate("/Home")
+          }, 1000);
+        }
       for(let i = 0; i < 10; i++)
         {
           for(let j = 0; j < 10; j++)
@@ -619,8 +646,19 @@ const Game = () => {
               if(playerGrid[i][j].classList.contains("hit"))
                 playerShipsSunk++;
               if(playerShipsSunk == 17)
-                alert("computer wins");
+              {
+                console.log("hi");
+                computerwin = true;
+              }
           }
+        }
+        if(computerwin)
+        {
+          UpdateWinLoss(0, 1);
+          setErrorMessage("Computer Won!");
+          setTimeout(() => {
+            navigate("/Home")
+          }, 1000);
         }
       isPlayerTurn = true;
     };
