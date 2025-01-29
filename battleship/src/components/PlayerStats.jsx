@@ -8,7 +8,7 @@ const PlayerStats = () => {
     const getData = async () => {
         try
         {
-            const res = await axios.get('http://localhost:5298/Score', {
+            const res = await axios.get(`${import.meta.env.VITE_API}/Score`, {
                 headers: {
                     Authorization: `Bearer ${tokenfromsesh}`
                 }

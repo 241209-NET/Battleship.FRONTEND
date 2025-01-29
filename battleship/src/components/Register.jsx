@@ -20,7 +20,7 @@ export default function Register() {
         // console.log(userdata);
 
         const response = await fetch(
-            'http://localhost:5298/register',
+            `${import.meta.env.VITE_API}/register`,
             {
                 method: 'POST',
                 headers: {
