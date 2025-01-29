@@ -9,6 +9,7 @@ const Scoreboard = () => {
         {
             const res = await axios.get('http://localhost:5298/api/User'); // will need to change
             setUsers(res.data);
+            console.log(res.data);
         } catch (e)
         {
             console.error("Could not fetch Data: " , e);
@@ -21,7 +22,6 @@ const Scoreboard = () => {
     }, []);
 
     const scores = users.map(user => ({
-        id: user.id,
         username: user.accountName,
         wins: user.numWins,
         losses: user.numLosses,
@@ -44,7 +44,7 @@ const Scoreboard = () => {
                     </thead>
                     <tbody>
                         {sortedScores.map((user, index) => (
-                            <tr key={user.id}>
+                            <tr key= {index + 1}>
                                 <td>{index + 1}</td>
                                 <td>{user.username}</td>
                                 <td>{user.wins}</td>
