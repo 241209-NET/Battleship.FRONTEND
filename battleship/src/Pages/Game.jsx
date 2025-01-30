@@ -5,6 +5,8 @@ import axios from "axios";
 
 let compShipsSunk = 0;
 let playerShipsSunk = 0;
+let gameStart;
+
 // User ID
 let User = {
   ID: sessionStorage.getItem("userid"),
@@ -147,6 +149,7 @@ const Game = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [computerShip, setComputerShip] = useState([]);
   const [playerShips, setPlayerShips] = useState([]);
+  const [changeDir, setChangeDir] = useState(true); 
   const [boatState, dispatch] = useReducer(shipReducer, {
     style: "",
     boat: "",
@@ -261,6 +264,7 @@ const Game = () => {
     playerShipsSunk = 0;
     compShipsSunk = 0;
     isPlayerTurn = null;
+    gameStart =false;
     const dateTime = new Date();
     const now = `${dateTime.getFullYear()}-${String(
       dateTime.getMonth() + 1
@@ -473,6 +477,7 @@ const Game = () => {
   //This will change the boat once set
   const handleSet = () => {
     isHorizontal = true;
+    setChangeDir(true); 
     if (boatState.boat === "carrier") {
       setMessage(
         'Set position of your Battleship on the left grid, when Done click "Set"'
@@ -496,6 +501,7 @@ const Game = () => {
     } else if (boatState.boat === "destroyer") {
       isPlayerTurn = true;
       setMessage("Your Turn. Click in any square in the enemy grid to shoot.");
+      gameStart = true;
     }
   };
 
@@ -545,10 +551,12 @@ const Game = () => {
     if (!checked.valid) {
       setErrorMessage(checked.message);
       setIsSetValid(false);
+
     } else {
       boatRef.current.classList = "";
       setIsSetValid(true);
       setErrorMessage(checked.message);
+      setChangeDir(false);
 
       for (let i = 0; i <= size; i++) {
         if (isHorizontal) {
@@ -762,7 +770,8 @@ const Game = () => {
               <p className="message">{message}</p>
               {errorMessage && <p className="error">{errorMessage}</p>}
               {isSetValid && (
-                <button
+                 !gameStart && (
+                  <button
                   className="set-boat"
                   onClick={(e) => {
                     e.preventDefault();
@@ -771,8 +780,10 @@ const Game = () => {
                 >
                   Set
                 </button>
-              )}
-              <button
+                ))}
+                {!gameStart && (
+                  changeDir && (
+                    <button
                 className="set-boat"
                 onClick={(e) => {
                   e.preventDefault();
@@ -781,6 +792,7 @@ const Game = () => {
               >
                 Change Direction
               </button>
+              ))}
             </>
           ) : (
             <button
