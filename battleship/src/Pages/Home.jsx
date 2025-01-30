@@ -4,7 +4,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import Scoreboard from "../components/Scoreboard";
 import GameList from "../components/GameList";
 import axios from "axios";
-import './css/home.css'
+import './css/Home.css'
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState(true);
