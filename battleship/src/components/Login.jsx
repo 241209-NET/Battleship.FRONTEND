@@ -18,7 +18,6 @@ export default function Login() {
             "email": username,
             "password": password
         };
-        // console.log(userdata);
 
         const response = await fetch(
             `${import.meta.env.VITE_API}/login`,

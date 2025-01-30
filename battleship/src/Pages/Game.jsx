@@ -6,7 +6,7 @@ import axios from "axios";
 let compShipsSunk = 0;
 let playerShipsSunk = 0;
 // User ID
-const User = {
+let User = {
   ID: sessionStorage.getItem("userid"),
   TOKEN: sessionStorage.getItem("token"),
 };
@@ -156,6 +156,10 @@ const Game = () => {
 
   // Boat Movement feature
   useEffect(() => {
+    User.ID = sessionStorage.getItem("userid");
+    User.TOKEN = sessionStorage.getItem("token"); 
+    Auth.Authorization = `Bearer ${User.TOKEN}`;
+
     playerGridRef.current.onpointermove = (e) => {
       const { clientX, clientY } = e;
 
@@ -608,13 +612,12 @@ const Game = () => {
 
   async function UpdateWinLoss(win, loss) {
     try {
-      console.log("wins are " + win);
-      console.log("losses are " + loss);
       const res = await axios.patch(
         `${import.meta.env.VITE_API}/UpdateScore?wins=${win}&losses=${loss}`,
         {},
         { headers: Auth }
       );
+      console.log(res);
     } catch (e) {
       console.log(e);
     }
@@ -632,15 +635,22 @@ const Game = () => {
       }
     }
     if (playerwin) {
+      console.log("player wins");
       UpdateWinLoss(1, 0);
-      alert("player wins");
+      setTimeout(() => {alert("player wins")}, 1000); 
       setMessage("You Win!");
-      navigate("/Home");
+      compShipsSunk = 0; 
+      playerShipsSunk = 0; 
+      playerwin = false; 
+      setTimeout(() => {navigate("/Home")}, 2000);
     }
     if (computerwin) {
       UpdateWinLoss(0, 1);
       alert("Computer wins");
       setErrorMessage("Computer Won!");
+      compShipsSunk = 0; 
+      playerShipsSunk = 0; 
+      computerwin = false; 
       navigate("/Home");
     }
   }
@@ -665,7 +675,6 @@ const Game = () => {
           playerGrid[x][y].classList.toggle("hit");
           postShot(x, y, _enemyGridId, "hit");
           CheckWin();
-          console.log("This IS AFTER computer CHECK WIN!!!");
           compTurn = true;
         } else {
           playerGrid[x][y].classList.toggle("miss");
@@ -701,7 +710,6 @@ const Game = () => {
           shootingGrid[index[0]][index[1]].classList.toggle("hit");
           postShot(index[0], index[1], _playerGridId, "hit");
           CheckWin();
-          console.log("This IS AFTER player CHECK WIN!!!");
           isPlayerTurn = true;
         } else {
           shootingGrid[index[0]][index[1]].classList.toggle("miss");
