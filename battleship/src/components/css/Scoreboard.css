@@ -20,7 +20,6 @@
 }
 
 #leader {
-    width: 100%;
     margin: 20px auto;
     background: #f8f9fa;
     border-radius: 10px;
@@ -33,20 +32,28 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 15px;
+    
 }
 
 .homeTable {
-    width: 100%;
     border-collapse: collapse;
     font-size: 18px;
     background: #fff;
     border-radius: 8px;
-    overflow: hidden;
+    display:flex;
+    max-height: 600px;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10%;
 }
 
 .homeTable thead {
     background: #007bff;
     color: white;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
 }
 
 .homeTable th, 

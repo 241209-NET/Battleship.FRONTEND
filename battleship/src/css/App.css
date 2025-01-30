@@ -87,9 +87,14 @@ section {
 .graph-user{
   display: flex;
   flex-direction: column;
-  margin: 0 20vmin;
+  margin: 20px auto;
   align-items: center;
   justify-content: center;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
 }
 
 .other-info{
@@ -100,7 +105,6 @@ section {
 
 .user-info{
   width: 500px;
-  height: 300px;
   background-color: #1f467a;
   box-shadow: inset 0 0 120px #347d97;
   margin-top: 5vmin;
@@ -112,7 +116,7 @@ section {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 5vmin;
 }
 
 .graph {
@@ -120,3 +124,35 @@ section {
   box-shadow: 4px 4px rgba(126, 126, 126, 0.514);
   border-radius: 20px;
 }
+
+#StatsTitle{
+  width: 100%;
+  background-color: #1f467a;
+  color: white;
+  border-radius: 10px;
+  font-family: 'Arial', sans-serif;
+}
+
+#WL{
+  display:flex;
+  
+}
+
+#W ,#L{
+  padding: 1rem;
+  background-color: #fff;
+  color: #1f467a;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-width: 320px;
+  border-radius: 20px;
+}
+
+#W{
+  margin-right: 10px;
+}
+
+#L{
+  margin-left: 10px;
+}
+
+

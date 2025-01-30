@@ -4,7 +4,11 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import Scoreboard from "../components/Scoreboard";
 import GameList from "../components/GameList";
 import axios from "axios";
+<<<<<<< Updated upstream
 import './css/Home.css'
+=======
+
+>>>>>>> Stashed changes
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState(true);
@@ -12,6 +16,7 @@ export default function Home() {
     setLeaderboard(!leaderboard);
   };
   const [email, setEmail] = useState(sessionStorage.getItem("username"));
+  const [name, setName] = useState(sessionStorage.getItem("accountName"));
   
 
   const [stats, setStats] = useState(["", 0, 0]);
@@ -26,7 +31,7 @@ export default function Home() {
                 }
             });
             setStats(res.data);
-            console.log(res.data.accountName);
+            console.log(res.data);
         } catch (e)
         {
             console.error("Could not fetch Data: " , e);
@@ -38,16 +43,19 @@ export default function Home() {
         getData();
     }, []);
 
-    console.log(stats.accountName);
 
   return (
     <div className="home">
+      
       <div className="graph-user">
+      <h2 id="StatsTitle">My Stats</h2>
+      <div id="stats-content">
         <div className="user-info">
-          <h2>Welcome {stats.accountName}</h2>
-          <p>Email: {email}</p>
-          <p>Wins: {stats.wins}</p>
-          <p>Losses: {stats.losses}</p>
+          <h2>Welcome {name}!</h2>
+          <div id="WL">
+          <p id="W">Wins: {stats.wins}</p>
+          <p id="L">Losses: {stats.losses}</p>
+          </div>
         </div>
         <div className="graph">
           <BarChart
@@ -70,13 +78,11 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="other-info">
-        
-        {leaderboard ? <Scoreboard></Scoreboard> : <GameList></GameList>}
-        <button className="button"id="LeaderToggle" onClick={toggleLeader}>
-          {leaderboard ? "My Games" : "Leaderboard"}{" "}
-        </button>
       </div>
+      <div className="other-info">
+       <Scoreboard></Scoreboard>
+      </div>
+      
     </div>
   );
 }
